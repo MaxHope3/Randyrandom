@@ -3,8 +3,6 @@ from spotipy.oauth2 import SpotifyOAuth
 import json
 import os.path
 
-clientId = ""
-clientSecret = ""
 redirectUri = "https://example.com/callback"
 fileName = "secrets.json"
 
@@ -29,10 +27,19 @@ scope = "user-library-read"
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope, client_id=clientId, client_secret=clientSecret, redirect_uri=redirectUri))
 
 playlists = sp.current_user_playlists()
-while playlists:
-    for i, playlist in enumerate(playlists['items']):
-        print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'],  playlist['name']))
-    if playlists['next']:
-        playlists = sp.next(playlists)
-    else:
-        playlists = None
+print(type(playlists))
+print("Available Playlists:")
+
+for playlist in playlists['items']:
+    print(playlist['name'])
+
+playlistName = input("What playlist do you wanna play? ")
+print("playing " + playlistName)
+
+for playlist in playlists['items']:
+    if playlist['name'] == playlistName:
+        playlistId = playlist['id']
+        break
+# TODO: errorhandling if playlist not found
+
+print(playlistId)
