@@ -6,6 +6,7 @@ import time
 
 redirectUri = "https://example.com/callback"
 fileName = "secrets.json"
+tracksToPlay = 4
 
 if os.path.isfile(fileName):
     with open(fileName) as openedFile:
@@ -47,10 +48,18 @@ for playlist in playlists['items']:
 sp.start_playback(context_uri=playlistUri)
 sp.shuffle(True)
 
+playbackDict = dict()
 # continuously read
 # break with Ctr+C
-while(True):
+for i in range(tracksToPlay):
+    time.sleep(5)
     currentPlayback = sp.current_playback()
-    print(currentPlayback)
-    time.sleep(10)
+    trackIdAndName = currentPlayback['item']['id'] + " " + currentPlayback['item']['name']
+    if trackIdAndName in playbackDict:
+        playbackDict[trackIdAndName] += 1
+    else:
+        playbackDict[trackIdAndName] = 1
+    print(trackIdAndName)
     sp.next_track()
+
+print(playbackDict)
