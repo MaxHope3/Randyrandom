@@ -2,3 +2,7 @@
 .cache
 
 secrets.json
+
+results.csv
+
+results.json
